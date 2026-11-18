@@ -24,6 +24,7 @@ import {
   clientIdAlreadyApproved,
   parseRedirectApproval,
   renderApprovalDialog,
+  renderOAuthSuccessPage,
 } from "./workersOAuthUtils";
 
 const app = new Hono<{ Bindings: Env & { OAUTH_PROVIDER: OAuthHelpers } }>();
@@ -64,9 +65,8 @@ app.get("/authorize", async (c) => {
   return renderApprovalDialog(c.req.raw, {
     client: await c.env.OAUTH_PROVIDER.lookupClient(clientId),
     server: {
-      // STAPE.AI on gtm-mcp.stape.ai, the deployment with the host notice,
-      // which the dialog also shows the user.
-      name: showsHostNotice(c.env) ? "STAPE.AI" : "STAPE.IO",
+      name: "Adviso",
+      logo: "https://www.adviso.ca/hubfs/logo_adviso/Advido-co.svg",
       noticeHtml: showsHostNotice(c.env) ? renderHostNoticeHtml() : undefined,
     },
     state: { oauthReqInfo },
@@ -214,5 +214,7 @@ app.get("/terms", async () => {
 });
 
 app.get("/llms.txt", (c) => c.text(LLMS_TXT));
+
+app.get("/oauth/success", () => renderOAuthSuccessPage());
 
 export { app as apisHandler };
