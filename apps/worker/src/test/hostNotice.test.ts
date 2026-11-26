@@ -653,13 +653,14 @@ describe("approval dialog", () => {
     (await send(env, `/authorize?${await authorizeQuery(env)}`)).text();
 
   it.each([
-    ["the .ai deployment", oldDeployment, "STAPE.AI"],
-    ["the .io deployment", newDeployment, "STAPE.IO"],
-  ])("names %s", async (_label, deployment, name) => {
+    ["the .ai deployment", oldDeployment],
+    ["the .io deployment", newDeployment],
+  ])("brands %s with Adviso", async (_label, deployment) => {
     const page = await approvalPage(deployment());
 
-    expect(page).toContain(name);
-    expect(page).not.toContain(name === "STAPE.AI" ? "STAPE.IO" : "STAPE.AI");
+    expect(page).toContain("Adviso");
+    expect(page).not.toContain("STAPE.AI");
+    expect(page).not.toContain("STAPE.IO");
   });
 
   it("shows the notice on the .ai deployment only, before the cutover", async () => {

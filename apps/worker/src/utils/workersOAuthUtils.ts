@@ -281,12 +281,15 @@ export function renderApprovalDialog(
         <style>
           /* Modern, responsive styling with system fonts */
           :root {
-            --primary-color: #0070f3;
-            --error-color: #f44336;
-            --border-color: #e5e7eb;
-            --text-color: #333;
-            --background-color: #fff;
-            --card-shadow: 0 8px 36px 8px rgba(0, 0, 0, 0.1);
+            --primary-color: #8540ff;
+            --primary-hover: #6f32dc;
+            --ink-color: #17152b;
+            --muted-color: #666378;
+            --border-color: #e8e5ef;
+            --text-color: #17152b;
+            --background-color: #f7f6fa;
+            --card-background: #fff;
+            --card-shadow: 0 24px 70px rgba(23, 21, 43, 0.12);
           }
           
           html {
@@ -299,69 +302,63 @@ export function renderApprovalDialog(
             display: flex;
             flex-direction: column;
             flex: 1 0 auto;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-                         Helvetica, Arial, sans-serif, "Apple Color Emoji",
-                         "Segoe UI Emoji", "Segoe UI Symbol";
-            line-height: 1.6;
+            font-family: "Aptos", "Segoe UI", Helvetica, Arial, sans-serif;
+            line-height: 1.55;
             color: var(--text-color);
-            background-color: #f9fafb;
+            background:
+              radial-gradient(circle at 85% 12%, rgba(133, 64, 255, 0.10), transparent 24rem),
+              linear-gradient(135deg, #fbfafc 0%, var(--background-color) 100%);
             margin: 0;
             padding: 0;
+            min-height: 100vh;
           }
           
           .container {
             display: flex;
             flex-direction: column;
             flex: 1 0 auto;
-            max-width: 600px;
-            margin: 2rem auto;
-            padding: 1rem;
+            width: min(640px, calc(100% - 32px));
+            margin: auto;
+            padding: 32px 0;
           }
           
           .precard {
-            padding: 16px;
+            padding: 0 0 24px;
             text-align: center;
           }
           
           .card {
-            background-color: var(--background-color);
+            background: var(--card-background);
+            border: 1px solid rgba(23, 21, 43, 0.06);
             border-radius: 8px;
             box-shadow: var(--card-shadow);
-            padding: 2rem;
+            padding: 40px;
           }
           
           .header {
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 1.5rem;
+            min-height: 56px;
           }
           
           .logo {
-            width: 48px;
-            height: 48px;
-            margin-right: 1rem;
-            border-radius: 8px;
+            width: 148px;
+            height: 40px;
             object-fit: contain;
           }
           
           .title {
-            margin: 0;
-            font-size: 1.3rem;
-            font-weight: 400;
-            
-            a {
-              text-decoration: none;
-              color: var(--text-color);
-            }
+            display: none;
           }
           
           .alert {
-            margin: 0;
-            font-size: 1.5rem;
-            font-weight: 400;
-            margin: 1rem 0;
-            text-align: center;
+            margin: 0 0 24px;
+            font-size: clamp(24px, 5vw, 32px);
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: 0;
+            text-align: left;
           }
           
           .description {
@@ -370,9 +367,10 @@ export function renderApprovalDialog(
           
           .client-info {
             border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 1rem 1rem 0.5rem;
-            margin-bottom: 1.5rem;
+            border-radius: 8px;
+            background: #faf9fc;
+            padding: 16px 20px 8px;
+            margin-bottom: 24px;
           }
           
           .client-name {
@@ -429,8 +427,13 @@ export function renderApprovalDialog(
           }
           
           .button-primary {
-            background-color: var(--primary-color);
+            background: var(--primary-color);
             color: white;
+            min-width: 120px;
+          }
+
+          .button-primary:hover {
+            background: var(--primary-hover);
           }
           
           .button-secondary {
@@ -443,7 +446,12 @@ export function renderApprovalDialog(
             display: flex;
             justify-content: center;
             column-gap: 24px;
-            padding: 2rem 1rem;
+            padding: 0 16px 24px;
+            font-size: 14px;
+          }
+
+          footer a {
+            color: var(--muted-color);
           }
           
           /* Responsive adjustments */
@@ -597,6 +605,135 @@ export function renderApprovalDialog(
   return new Response(htmlContent, {
     headers: {
       "Content-Type": "text/html; charset=utf-8",
+    },
+  });
+}
+
+export function renderOAuthSuccessPage(): Response {
+  const htmlContent = `
+    <!DOCTYPE html>
+    <html lang="fr">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="robots" content="noindex,nofollow">
+        <title>Connexion reussie | Adviso</title>
+        <style>
+          :root {
+            --primary: #8540ff;
+            --primary-hover: #6f32dc;
+            --ink: #17152b;
+            --muted: #666378;
+            --border: #e8e5ef;
+            --surface: #f7f6fa;
+          }
+
+          * { box-sizing: border-box; }
+
+          html, body { min-height: 100%; }
+
+          body {
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 24px;
+            font-family: "Aptos", "Segoe UI", Helvetica, Arial, sans-serif;
+            color: var(--ink);
+            background:
+              radial-gradient(circle at 85% 12%, rgba(133, 64, 255, 0.10), transparent 24rem),
+              linear-gradient(135deg, #fbfafc 0%, var(--surface) 100%);
+          }
+
+          main {
+            width: min(560px, 100%);
+            background: #fff;
+            border: 1px solid rgba(23, 21, 43, 0.06);
+            border-radius: 8px;
+            box-shadow: 0 24px 70px rgba(23, 21, 43, 0.12);
+            padding: 48px;
+            text-align: center;
+          }
+
+          .logo {
+            width: 148px;
+            height: 40px;
+            object-fit: contain;
+          }
+
+          .status {
+            width: 56px;
+            height: 56px;
+            margin: 32px auto 20px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: #eee7ff;
+            color: var(--primary);
+          }
+
+          .status svg {
+            width: 28px;
+            height: 28px;
+          }
+
+          h1 {
+            margin: 0;
+            font-size: clamp(28px, 6vw, 36px);
+            line-height: 1.1;
+            letter-spacing: 0;
+          }
+
+          p {
+            max-width: 420px;
+            margin: 16px auto 28px;
+            color: var(--muted);
+            line-height: 1.55;
+          }
+
+          button {
+            min-width: 180px;
+            border: 0;
+            border-radius: 6px;
+            padding: 13px 20px;
+            background: var(--primary);
+            color: #fff;
+            font: inherit;
+            font-weight: 650;
+            cursor: pointer;
+          }
+
+          button:hover { background: var(--primary-hover); }
+
+          @media (max-width: 640px) {
+            body { padding: 16px; }
+            main { padding: 32px 20px; }
+          }
+        </style>
+      </head>
+      <body>
+        <main>
+          <img class="logo" src="https://www.adviso.ca/hubfs/logo_adviso/Advido-co.svg" alt="Adviso">
+          <div class="status" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 6 9 17l-5-5"/>
+            </svg>
+          </div>
+          <h1>Connexion reussie</h1>
+          <p>Votre accès Google Tag Manager est maintenant autorisé. Vous pouvez fermer cette fenêtre et retourner à votre client MCP.</p>
+          <button type="button" onclick="window.close();">Fermer cette fenêtre</button>
+        </main>
+        <script>
+          window.close();
+        </script>
+      </body>
+    </html>
+  `;
+
+  return new Response(htmlContent, {
+    headers: {
+      "Content-Type": "text/html; charset=utf-8",
+      "Cache-Control": "no-store",
     },
   });
 }
